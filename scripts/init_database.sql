@@ -19,7 +19,7 @@ CREATE SCHEMA IF NOT EXISTS gold_prod;
 
 CREATE TABLE bronze_dev.crm_cust_info(
     cst_id INT,
-    cst_key INT,
+    cst_key VARCHAR(50),
     cst_firstname VARCHAR(50),
     cst_lastname VARCHAR(50),
     cst_marital_status VARCHAR(50),
