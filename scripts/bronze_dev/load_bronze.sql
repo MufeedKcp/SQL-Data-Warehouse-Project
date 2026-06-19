@@ -29,6 +29,9 @@ ERROR Handled in local_infile in MySQL:
 
     - step 3: Click close, and reconnect to your database instance. 
 
+Best practice: 
+    - Run each section of this sql scripts for better understanding of each actions
+
 */
 
 TRUNCATE TABLE bronze_dev.crm_cust_info;
