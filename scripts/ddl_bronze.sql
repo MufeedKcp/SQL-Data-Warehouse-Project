@@ -67,3 +67,12 @@ CREATE TABLE bronze_dev.erp_px_cat_g1v2(
     subcat VARCHAR(50),
 	maintenance VARCHAR(50)
 );
+
+
+CREATE TABLE IF NOT EXISTS bronze_dev.Load_Log_Table(
+    log_id INT PRIMARY KEY AUTO_INCREMENT,
+    table_name VARCHAR(50),
+    table_action VARCHAR(50),
+    row_count INT DEFAULT 0,
+    load_duration DATETIME
+);
