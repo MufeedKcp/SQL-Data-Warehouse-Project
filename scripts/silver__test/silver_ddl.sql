@@ -22,13 +22,16 @@ CREATE TABLE IF NOT EXISTS silver_test.cust_info(
 CREATE TABLE IF NOT EXISTS silver_test.prd_info(
     prd_id INT,
     prd_key	VARCHAR(50),
+    cat_id VARCHAR(50),
+    prd_sales_id VARCHAR(50),
     prd_nm VARCHAR(50),
     prd_cost INT,
     prd_line VARCHAR(50),
     prd_start_dt DATE,
     prd_end_dt DATE,
     dwh_create_date DATETIME DEFAULT NOW()
-);
+)
+
 
 CREATE TABLE IF NOT EXISTS silver_test.sales_details(
     sls_ord_num VARCHAR(50),
