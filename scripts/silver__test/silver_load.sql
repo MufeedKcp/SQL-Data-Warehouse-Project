@@ -44,4 +44,38 @@ SELECT
     ROW_NUMBER() OVER(PARTITION BY cst_id ORDER BY cst_create_date DESC) AS flag_last
 FROM bronze_dev.crm_cust_info
 ) AS t
-WHERE flag_last = 1 AND cst_id != 0
+WHERE flag_last = 1 AND cst_id != 0;
+
+
+-- derived column from prd_key into 'cat_id & prd_sales_id
+-- convert abbreviation value into full value for more understandability
+-- derived prd_end_dt from prd_start_dt by setting Start_date of the next record using `LEAD()` also minus 1 day
+
+INSERT INTO silver_test.prd_info(
+	prd_id ,
+    prd_key,
+    cat_id,
+    prd_sales_id,
+    prd_nm,
+    prd_cost,
+    prd_line,
+    prd_start_dt,
+    prd_end_dt
+)
+SELECT 
+	prd_id,
+    prd_key,
+    REPLACE(SUBSTRING(prd_key, 1, 5), '-', '_') AS cat_id,
+    SUBSTRING(prd_key, 7, CHAR_LENGTH(prd_key)) AS prd_sales_id,
+    prd_nm,
+	prd_cost,
+CASE UPPER(TRIM(prd_line))
+	WHEN 'M' THEN 'Mainstream'
+    WHEN 'S' THEN 'Specialty'
+    WHEN 'T' THEN 'Trial'
+    WHEN 'R' THEN 'Retail'
+    ELSE 'n/a'
+END AS prd_line,
+	prd_start_dt,
+    DATE_SUB(LEAD(prd_start_dt) OVER (PARTITION BY prd_key ORDER BY prd_start_dt), INTERVAL 1 DAY) AS prd_end_dt
+FROM bronze_dev.crm_prd_info;
