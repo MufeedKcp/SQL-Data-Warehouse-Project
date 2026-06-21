@@ -50,6 +50,7 @@ WHERE flag_last = 1 AND cst_id != 0;
 -- derived column from prd_key into 'cat_id & prd_sales_id
 -- convert abbreviation value into full value for more understandability
 -- derived prd_end_dt from prd_start_dt by setting Start_date of the next record using `LEAD()` also minus 1 day
+-- deduplicated PK 
 
 INSERT INTO silver_test.prd_info(
 	prd_id ,
