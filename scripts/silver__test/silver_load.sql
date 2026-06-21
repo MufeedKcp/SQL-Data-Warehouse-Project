@@ -9,7 +9,11 @@ Script Purpose:
 
 */
 
-
+-- deduplicated PK 
+-- exclude PK value 'ZERO'
+-- TRIM string values
+-- Convert abbreviation value into full value for more understandability
+-- converted cst_gndr to cst_gender for readability
 INSERT INTO silver_test.cust_info(
 	cst_id,
     cst_key,
