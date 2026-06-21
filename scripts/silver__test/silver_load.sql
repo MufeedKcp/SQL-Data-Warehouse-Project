@@ -121,3 +121,28 @@ END AS new_sls_sales,
 	ELSE sls_price
 END AS new_sls_price
 FROM bronze_dev.crm_sales_details;
+
+
+
+INSERT INTO silver_test.cust_dob(
+    cst_id,
+    birth_date,
+    gender
+)
+SELECT 
+CASE 
+	WHEN cid LIKE 'NAS%' THEN SUBSTRING(cid, 4, CHAR_LENGTH(cid)) 
+    ELSE cid
+END AS cst_id,
+CASE 
+	WHEN bdate > NOW() THEN NULL
+    ELSE bdate
+END AS birth_date,
+CASE
+	WHEN UPPER(TRIM(gen)) = 'M' THEN 'Male'
+    WHEN UPPER(TRIM(gen)) = 'F' THEN 'Female'
+    WHEN UPPER(TRIM(gen)) = 'Female' THEN 'Female'
+    WHEN UPPER(TRIM(gen)) = 'Male' THEN 'Male'
+    ELSE 'n/a'
+END AS cust_gender
+FROM bronze_dev.erp_cust_az12;
