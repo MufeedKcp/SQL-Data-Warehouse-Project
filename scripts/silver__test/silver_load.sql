@@ -80,3 +80,44 @@ END AS prd_line,
 	prd_start_dt,
     DATE_SUB(LEAD(prd_start_dt) OVER (PARTITION BY prd_key ORDER BY prd_start_dt), INTERVAL 1 DAY) AS prd_end_dt
 FROM bronze_dev.crm_prd_info;
+
+
+
+
+INSERT INTO silver_test.sales_details(
+    sls_ord_num,
+    sls_prd_key,
+    sls_cust_id,
+    sls_order_dt,
+    sls_ship_dt,
+    sls_due_dt,
+    sls_sales,
+    sls_quantity,
+    sls_price 
+)
+SELECT 
+	sls_ord_num,
+    sls_prd_key,
+    sls_cust_id,
+CASE
+	WHEN sls_order_dt = 0 OR CHAR_LENGTH(sls_order_dt) != 8 THEN NULL
+	ELSE CAST(sls_order_dt AS DATE)
+END AS sls_order_dt,
+CASE
+	WHEN sls_ship_dt = 0 OR CHAR_LENGTH(sls_ship_dt) != 8 THEN NULL
+	ELSE CAST(sls_ship_dt AS DATE)
+END AS sls_ship_dt,
+CASE
+	WHEN sls_due_dt = 0 OR CHAR_LENGTH(sls_due_dt) != 8 THEN NULL
+	ELSE CAST(sls_due_dt AS DATE)
+END AS sls_due_dt,
+    CASE 
+	WHEN sls_sales <= 0 OR sls_sales IS NULL OR sls_sales != ABS(sls_quantity) * ABS(sls_price) THEN ABS(sls_price) * sls_quantity
+    ELSE sls_sales
+END AS new_sls_sales,
+    sls_quantity,
+    CASE 
+    WHEN sls_price <= 0 OR sls_price IS NULL THEN sls_sales / NULLIF(sls_quantity, 0)
+	ELSE sls_price
+END AS new_sls_price
+FROM bronze_dev.crm_sales_details;
