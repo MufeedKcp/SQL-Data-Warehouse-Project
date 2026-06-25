@@ -14,6 +14,7 @@ Script Purpose:
 -- TRIM string values
 -- Convert abbreviation value into full value for more understandability
 -- converted cst_gndr to cst_gender for readability
+TRUNCATE TABLE silver_test.cust_info;
 INSERT INTO silver_test.cust_info(
 	cst_id,
     cst_key,
@@ -51,6 +52,7 @@ WHERE flag_last = 1 AND cst_id != 0;
 -- convert abbreviation value into full value for more understandability
 -- derived prd_end_dt from prd_start_dt by setting Start_date of the next record using `LEAD()` also minus 1 day
 -- deduplicated PK 
+TRUNCATE TABLE silver_test.prd_info;
 INSERT INTO silver_test.prd_info(
 	prd_id ,
     prd_key,
@@ -82,7 +84,7 @@ FROM bronze_dev.crm_prd_info;
 
 
 
-
+TRUNCATE TABLE silver_test.sales_details;
 INSERT INTO silver_test.sales_details(
     sls_ord_num,
     sls_prd_key,
@@ -122,7 +124,7 @@ END AS new_sls_price
 FROM bronze_dev.crm_sales_details;
 
 
-
+TRUNCATE TABLE silver_test.cust_dob;
 INSERT INTO silver_test.cust_dob(
     cst_id,
     birth_date,
@@ -147,6 +149,7 @@ END AS cust_gender
 FROM bronze_dev.erp_cust_az12;
 
 
+TRUNCATE TABLE silver_test.cust_location;
 INSERT INTO silver_test.cust_location(
 	cid,
     cntry
@@ -162,6 +165,9 @@ END AS cst_country
 FROM bronze_dev.erp_loc_a101
 ORDER BY cntry;
 
+
+
+TRUNCATE TABLE silver_test.prd_category;
 INSERT INTO silver_test.prd_category(
 	id,
     cat,
