@@ -146,3 +146,31 @@ CASE
     ELSE 'n/a'
 END AS cust_gender
 FROM bronze_dev.erp_cust_az12;
+
+
+INSERT INTO silver_test.cust_location(
+	cid,
+    cntry
+)
+SELECT 
+	REPLACE(cid, '-', '') AS cst_key,
+CASE
+	WHEN TRIM(cntry) = '' OR TRIM(cntry) IS NULL THEN 'n/a'
+    WHEN TRIM(UPPER(cntry)) IN ('US', 'USA') THEN 'United States'
+    WHEN TRIM(cntry) = 'DE' THEN 'Germany'
+    ELSE TRIM(cntry)
+END AS cst_country
+FROM bronze_dev.erp_loc_a101
+ORDER BY cntry;
+
+INSERT INTO silver_test.prd_category(
+	id,
+    cat,
+    subcat,
+    maintenance)
+SELECT 
+	id,
+    cat,
+    subcat,
+    maintenance
+FROM bronze_dev.erp_px_cat_g1v2 ORDER BY id;
