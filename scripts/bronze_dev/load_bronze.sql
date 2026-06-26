@@ -50,9 +50,7 @@ SET @crm_cust_row_counts = (SELECT COUNT(*) FROM bronze_dev.crm_cust_info);
 SET @crm_cust_duration = ROUND((UNIX_TIMESTAMP(@crm_cust_load_end_time) - UNIX_TIMESTAMP(@crm_cust_start_load_time)), 3);
 
 INSERT INTO bronze_dev.load_logs(table_name, table_action, row_count, load_duration) 
-VALUES('bronze_dev.crm_cust_info', 'Loading data', @crm_cust_row_counts, COALESCE(@crm_cust_duration, 0));
-
-SELECT CONCAT('Loaded ', @crm_cust_row_counts, ' rows into crm_cust_info table in ', ROUND(COALESCE(@crm_cust_duration, 0), 2), 'seconds') AS load_message;
+VALUES('bronze_dev.crm_cust_info', 'Loading data', @crm_cust_row_counts, @crm_cust_duration);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -72,9 +70,8 @@ SET @crm_prd_row_counts = (SELECT COUNT(*) FROM bronze_dev.crm_prd_info);
 SET @crm_prd_duration = ROUND((UNIX_TIMESTAMP(@crm_prd_end_load_time) - UNIX_TIMESTAMP(@crm_prd_start_load_time)), 3);
 
 INSERT INTO bronze_dev.load_logs(table_name, table_action, row_count, load_duration) 
-VALUES('bronze_dev.crm_prd_info', 'Loading data', @crm_prd_row_counts, COALESCE(@crm_prd_duration, 0));
+VALUES('bronze_dev.crm_prd_info', 'Loading data', @crm_prd_row_counts, @crm_prd_duration);
 
-SELECT CONCAT('Loaded ', @crm_prd_row_counts, ' rows into crm_prd_info table in ', ROUND(COALESCE(@crm_prd_duration, 0), 2), 'seconds') AS load_message;
 -----------------------------------------------------------------------------------------------------------------------------------------------
 TRUNCATE TABLE bronze_dev.crm_sales_details;
 
@@ -94,7 +91,6 @@ SET @crm_sales_duration = ROUND((UNIX_TIMESTAMP(@crm_sales_load_end_time) - UNIX
 INSERT INTO bronze_dev.load_logs(table_name, table_action, row_count, load_duration) 
 VALUES('bronze_dev.crm_sales_details', 'Loading data', @crm_sales_row_counts, @crm_sales_duration);
 
-SELECT CONCAT('Loaded ', @crm_sales_row_counts, ' rows into crm_sales_details table in ', ROUND(COALESCE(@crm_sales_duration, 0), 2), 'seconds') AS load_message;
 -----------------------------------------------------------------------------------------------------------------------------------------------
 TRUNCATE TABLE bronze_dev.erp_cust_az12;
 
@@ -114,7 +110,6 @@ SET @erp_cust_duration = ROUND((UNIX_TIMESTAMP(@erp_cust_load_end_time) - UNIX_T
 INSERT INTO bronze_dev.load_logs(table_name, table_action, row_count, load_duration) 
 VALUES('bronze_dev.erp_cust_az12', 'Loading data', @erp_cust_row_counts, @erp_cust_duration);
 
-SELECT CONCAT('Loaded ', @erp_cust_row_counts, ' rows into erp_cust_az12 table in ', ROUND(COALESCE(@erp_cust_duration, 0), 2), 'seconds') AS load_message;
 -----------------------------------------------------------------------------------------------------------------------------------------------
 TRUNCATE TABLE bronze_dev.erp_loc_a101;
 
@@ -132,9 +127,8 @@ SET @erp_loc_row_counts = (SELECT COUNT(*) FROM bronze_dev.erp_loc_a101);
 SET @erp_loc_duration = ROUND((UNIX_TIMESTAMP(@erp_loc_load_end_time) - UNIX_TIMESTAMP(@erp_loc_start_load_time)), 3);
 
 INSERT INTO bronze_dev.load_logs(table_name, table_action, row_count, load_duration) 
-VALUES('bronze_dev.erp_loc_a101', 'Loading data', @row_counts, COALESCE(@erp_loc_duration, 0));
+VALUES('bronze_dev.erp_loc_a101', 'Loading data', @row_counts, @erp_loc_duration);
 
-SELECT CONCAT('Loaded ', @erp_loc_row_counts, ' rows into erp_loc_a101 table in ', ROUND(COALESCE(@erp_loc_duration, 0), 2), 'seconds') AS load_message;
 -----------------------------------------------------------------------------------------------------------------------------------------------
 TRUNCATE TABLE bronze_dev.erp_px_cat_g1v2;
 
@@ -154,4 +148,3 @@ SET @erp_cat_duration = ROUND((UNIX_TIMESTAMP(@erp_cat_load_end_time) - UNIX_TIM
 INSERT INTO bronze_dev.load_logs(table_name, table_action, row_count, load_duration) 
 VALUES('bronze_dev.erp_px_cat_g1v2', 'Loading data', @erp_cat_row_counts, @erp_cat_duration);
 
-SELECT CONCAT('Loaded ', @erp_cat_row_counts, ' rows into erp_px_cat_g1v2 table in ', ROUND(COALESCE(@erp_cat_duration, 0), 2), 'seconds') AS load_message;

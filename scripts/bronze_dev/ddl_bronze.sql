@@ -76,5 +76,5 @@ CREATE TABLE IF NOT EXISTS bronze_dev.Load_Log_Table(
     table_name VARCHAR(50),
     table_action VARCHAR(50),
     row_count INT DEFAULT 0,
-    load_duration DATETIME
+    load_duration VARCHAR(20) DEFAULT NULL
 );
