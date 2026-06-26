@@ -66,9 +66,8 @@ SET @prd_info_silver_start_load_time = NOW();
 
 INSERT INTO silver_test.prd_info(
 	prd_id ,
-    prd_key,
     cat_id,
-    prd_sales_id,
+	prd_key,
     prd_nm,
     prd_cost,
     prd_line,
@@ -77,9 +76,8 @@ INSERT INTO silver_test.prd_info(
 )
 SELECT 
 	prd_id,
-    prd_key,
     REPLACE(SUBSTRING(prd_key, 1, 5), '-', '_') AS cat_id,
-    SUBSTRING(prd_key, 7, CHAR_LENGTH(prd_key)) AS prd_sales_id,
+    SUBSTRING(prd_key, 7, CHAR_LENGTH(prd_key)) AS prd_key,
     prd_nm,
 	prd_cost,
 CASE UPPER(TRIM(prd_line))
