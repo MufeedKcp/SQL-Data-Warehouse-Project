@@ -9,12 +9,13 @@ Script Purpose:
 
 */
 
--- deduplicated PK 
--- exclude PK value 'ZERO'
--- TRIM string values
--- Convert abbreviation value into full value for more understandability
--- converted cst_gndr to cst_gender for readability
 TRUNCATE TABLE silver_test.cust_info;
+
+INSERT INTO silver_test.load_logs(table_name, table_action) 
+VALUES('silver_test.cust_info', 'Truncate table');
+
+SET @cust_info_silver_start_load_time = NOW();
+
 INSERT INTO silver_test.cust_info(
 	cst_id,
     cst_key,
@@ -47,12 +48,21 @@ FROM bronze_dev.crm_cust_info
 ) AS t
 WHERE flag_last = 1 AND cst_id != 0;
 
+SET @cust_info_silver_load_end_time = NOW();
+SET @cust_info_silver_row_counts = (SELECT COUNT(*) FROM silver_test.cust_info);
+SET @cust_info_silver_duration = ROUND((UNIX_TIMESTAMP(@cust_info_silver_load_end_time) - UNIX_TIMESTAMP(@cust_info_silver_start_load_time)), 3);
 
--- derived column from prd_key into 'cat_id & prd_sales_id
--- convert abbreviation value into full value for more understandability
--- derived prd_end_dt from prd_start_dt by setting Start_date of the next record using `LEAD()` also minus 1 day
--- deduplicated PK 
+INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
+VALUES('silver_test.cust_info', 'Loading data', @cust_info_silver_row_counts, @cust_info_silver_duration);
+
+-----
+ 
 TRUNCATE TABLE silver_test.prd_info;
+INSERT INTO silver_test.load_logs(table_name, table_action) 
+VALUES('silver_test.prd_info', 'Truncate table');
+
+SET @prd_info_silver_start_load_time = NOW();
+
 INSERT INTO silver_test.prd_info(
 	prd_id ,
     prd_key,
@@ -82,9 +92,21 @@ END AS prd_line,
     DATE_SUB(LEAD(prd_start_dt) OVER (PARTITION BY prd_key ORDER BY prd_start_dt), INTERVAL 1 DAY) AS prd_end_dt
 FROM bronze_dev.crm_prd_info;
 
+SET @prd_info_silver_load_end_time = NOW();
+SET @prd_info_silver_row_counts = (SELECT COUNT(*) FROM silver_test.prd_info);
+SET @prd_info_silver_duration = ROUND((UNIX_TIMESTAMP(@prd_info_silver_load_end_time) - UNIX_TIMESTAMP(@prd_info_silver_start_load_time)), 3);
 
+INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
+VALUES('silver_test.prd_info', 'Loading data', @prd_info_silver_row_counts, @prd_info_silver_duration);
+
+-----
 
 TRUNCATE TABLE silver_test.sales_details;
+INSERT INTO silver_test.load_logs(table_name, table_action) 
+VALUES('silver_test.sales_details', 'Truncate table');
+
+SET @sales_details_silver_start_load_time = NOW();
+
 INSERT INTO silver_test.sales_details(
     sls_ord_num,
     sls_prd_key,
@@ -123,8 +145,20 @@ END AS new_sls_sales,
 END AS new_sls_price
 FROM bronze_dev.crm_sales_details;
 
+SET @sales_details_silver_load_end_time = NOW();
+SET @sales_details_silver_row_counts = (SELECT COUNT(*) FROM silver_test.sales_details);
+SET @sales_details_silver_duration = ROUND((UNIX_TIMESTAMP(@sales_details_silver_load_end_time) - UNIX_TIMESTAMP(@sales_details_silver_start_load_time)), 3);
+
+INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
+VALUES('silver_test.sales_details', 'Loading data', @sales_details_silver_row_counts, @sales_details_silver_duration);
+------
 
 TRUNCATE TABLE silver_test.cust_dob;
+INSERT INTO silver_test.load_logs(table_name, table_action) 
+VALUES('silver_test.cust_dob', 'Truncate table');
+
+SET @cust_dob_silver_start_load_time = NOW();
+
 INSERT INTO silver_test.cust_dob(
     cst_id,
     birth_date,
@@ -148,8 +182,21 @@ CASE
 END AS cust_gender
 FROM bronze_dev.erp_cust_az12;
 
+SET @cust_dob_silver_load_end_time = NOW();
+SET @cust_dob_silver_row_counts = (SELECT COUNT(*) FROM silver_test.cust_dob);
+SET @cust_dob_silver_duration = ROUND((UNIX_TIMESTAMP(@cust_dob_silver_load_end_time) - UNIX_TIMESTAMP(@cust_dob_silver_start_load_time)), 3);
+
+INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
+VALUES('silver_test.cust_dob', 'Loading data', @cust_dob_silver_row_counts, @cust_dob_silver_duration);
+
+-------
 
 TRUNCATE TABLE silver_test.cust_location;
+INSERT INTO silver_test.load_logs(table_name, table_action) 
+VALUES('silver_test.cust_location', 'Truncate table');
+
+SET @cust_location_silver_start_load_time = NOW();
+
 INSERT INTO silver_test.cust_location(
 	cid,
     cntry
@@ -165,9 +212,21 @@ END AS cst_country
 FROM bronze_dev.erp_loc_a101
 ORDER BY cntry;
 
+SET @cust_location_silver_load_end_time = NOW();
+SET @cust_location_silver_row_counts = (SELECT COUNT(*) FROM silver_test.cust_location);
+SET @cust_location_silver_duration = ROUND((UNIX_TIMESTAMP(@cust_location_silver_load_end_time) - UNIX_TIMESTAMP(@cust_location_silver_start_load_time)), 3);
 
+INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
+VALUES('silver_test.cust_location', 'Loading data', @cust_location_silver_row_counts, @cust_location_silver_duration);
+
+------
 
 TRUNCATE TABLE silver_test.prd_category;
+INSERT INTO silver_test.load_logs(table_name, table_action) 
+VALUES('silver_test.prd_category', 'Truncate table');
+
+SET @prd_category_silver_start_load_time = NOW();
+
 INSERT INTO silver_test.prd_category(
 	id,
     cat,
@@ -179,3 +238,12 @@ SELECT
     subcat,
     maintenance
 FROM bronze_dev.erp_px_cat_g1v2 ORDER BY id;
+
+SET @prd_category_silver_load_end_time = NOW();
+SET @prd_category_silver_row_counts = (SELECT COUNT(*) FROM silver_test.cust_location);
+SET @prd_category_silver_duration = ROUND((UNIX_TIMESTAMP(@prd_category_silver_load_end_time) - UNIX_TIMESTAMP(@prd_category_silver_start_load_time)), 3);
+
+INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
+VALUES('silver_test.prd_category', 'Loading data', @prd_category_silver_row_counts, @prd_category_silver_duration);
+
+
