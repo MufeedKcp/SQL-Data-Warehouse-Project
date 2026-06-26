@@ -21,11 +21,12 @@ LEFT JOIN silver_test.cust_location cl
 	ON ci.cst_key = cl.cid;
 
 
-CREATE VIEW gold_prod.dim_products AS
+CREATE OR REPLACE VIEW gold_prod.dim_products AS
 SELECT
 	ROW_NUMBER() OVER (ORDER BY pi.prd_start_dt, pi.prd_key) AS product_key,
 	pi.prd_id AS product_id,
     pi.prd_key AS product_number,
+    pi.prd_sales_id AS product_sales_id,
     pi.prd_nm AS product_name,
     pi.cat_id AS category_id,
 	pc.cat AS category, 
