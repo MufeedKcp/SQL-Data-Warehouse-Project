@@ -8,6 +8,7 @@ Script Purpose:
 		- Inserts transformed and cleansed data from Bronze into Silver tables.
 
 */
+TRUNCATE TABLE silver_test.load_logs;
 
 TRUNCATE TABLE silver_test.cust_info;
 
