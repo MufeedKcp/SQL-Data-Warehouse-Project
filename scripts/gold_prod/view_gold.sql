@@ -39,3 +39,21 @@ FROM silver_test.prd_info pi
 LEFT JOIN silver_test.prd_category pc
 	ON pi.cat_id = pc.id
 WHERE pi.prd_end_dt IS NULL; ----- exclude the historical data 
+
+
+CREATE OR REPLACE VIEW gold_prod.fact_sales AS
+SELECT 
+	sls_ord_num AS order_number, 
+    dp.product_key, 
+    dc.customer_key, 
+    sls_price AS price,
+    sls_quantity AS quantity,
+    sls_sales AS sales_amount,
+	sls_order_dt AS order_date, 
+    sls_ship_dt AS shipping_date, 
+    sls_due_dt AS due_date
+FROM silver_test.sales_details sd
+LEFT JOIN gold_prod.dim_products dp
+	ON sd.sls_prd_key = dp.product_number
+LEFT JOIN gold_prod.dim_customers dc
+	ON sd.sls_cust_id = dc.customer_id
