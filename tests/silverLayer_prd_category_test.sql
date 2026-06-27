@@ -1,3 +1,7 @@
+-- Testing 'silver_test.prd_category'
+SELECT * FROM silver_test.prd_category;
+
+
 -- Check for Unwanted Spaces
 SELECT 
 	cat,

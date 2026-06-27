@@ -1,3 +1,6 @@
+-- Testing 'silver_test.cust_dob'
+SELECT * FROM silver_test.cust_dob;
+
 -- Identify Out-of-Range Dates
 SELECT 
 	cst_id
