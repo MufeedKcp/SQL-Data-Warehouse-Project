@@ -24,7 +24,6 @@ OR cst_lastname != TRIM(cst_lastname)
 OR cst_marital_status != TRIM(cst_marital_status)
 OR cst_gndr != TRIM(cst_gndr);
 
-
 -- Data Standardization & Consistency
 SELECT DISTINCT
     cst_marital_status

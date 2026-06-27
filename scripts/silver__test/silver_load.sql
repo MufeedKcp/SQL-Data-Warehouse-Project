@@ -118,6 +118,20 @@ INSERT INTO silver_test.sales_details(
     sls_price 
 )
 SELECT 
+	sls_ord_num, 
+    sls_prd_key, 
+    sls_cust_id, 
+    sls_order_dt, 
+    sls_ship_dt, 
+    sls_due_dt, 
+CASE 
+	WHEN sls_sales <= 0 OR sls_sales IS NULL THEN sls_price * sls_quantity
+    ELSE sls_sales
+END AS sls_sales,
+    sls_quantity, 
+    sls_price
+FROM(
+SELECT 
 	sls_ord_num,
     sls_prd_key,
     sls_cust_id,
@@ -133,16 +147,17 @@ CASE
 	WHEN sls_due_dt = 0 OR CHAR_LENGTH(sls_due_dt) != 8 THEN NULL
 	ELSE CAST(sls_due_dt AS DATE)
 END AS sls_due_dt,
-    CASE 
-	WHEN sls_sales <= 0 OR sls_sales IS NULL OR sls_sales != ABS(sls_quantity) * ABS(sls_price) THEN ABS(sls_price) * sls_quantity
+CASE 
+	WHEN sls_sales IS NULL OR sls_sales <= 0 OR sls_sales != ABS(sls_price) * ABS(sls_quantity) THEN ABS(sls_price) * ABS(sls_quantity)
     ELSE sls_sales
-END AS new_sls_sales,
-    sls_quantity,
-    CASE 
-    WHEN sls_price <= 0 OR sls_price IS NULL THEN sls_sales / NULLIF(sls_quantity, 0)
-	ELSE sls_price
-END AS new_sls_price
-FROM bronze_dev.crm_sales_details;
+END AS sls_sales,
+	sls_quantity, 
+CASE 
+	WHEN sls_price IS NULL OR sls_price <= 0 THEN  sls_sales / sls_quantity
+    ELSE sls_price
+END AS sls_price
+FROM bronze_dev.crm_sales_details
+) AS t;
 
 SET @sales_details_silver_load_end_time = NOW();
 SET @sales_details_silver_row_counts = (SELECT COUNT(*) FROM silver_test.sales_details);
@@ -150,6 +165,7 @@ SET @sales_details_silver_duration = ROUND((UNIX_TIMESTAMP(@sales_details_silver
 
 INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
 VALUES('silver_test.sales_details', 'Loading data', @sales_details_silver_row_counts, @sales_details_silver_duration);
+
 ------
 
 TRUNCATE TABLE silver_test.cust_dob;
