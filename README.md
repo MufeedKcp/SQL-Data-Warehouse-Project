@@ -36,17 +36,14 @@ The entire pipeline is fully automated via **Docker Compose**: a single command 
 
 ## Architecture Diagram
 
-
-<img src="/docs/1st-architecture.png" width="300" alt="My Architecture Diagram">
+<img src="/docs/architecture_diagram.png" width="400" alt="My Architecture Diagram">
 
 > Medallion flow diagram — Bronze ingestion → Silver transformation → Gold Star Schema
 
 
-<img src="/docs/Data_Model.png" width="300" alt="My Architecture Diagram">
+<img src="/docs/Data_Model.png" width="400" alt="My Architecture Diagram">
 
 > Star schema ERD — fact_sales_details with dim_customers and dim_products
-
-<img src="/docs/SQL-dwh-architecture.png" width="300" alt="My Architecture Diagram">
 
 ---
 
