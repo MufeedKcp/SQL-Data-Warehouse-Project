@@ -36,7 +36,7 @@ The entire pipeline is fully automated via **Docker Compose**: a single command 
 
 ## Architecture Diagram
 
-<img src="/docs/architecture_diagram.png" width="400" alt="My Architecture Diagram">
+<img src="/docs/architecture_diagram.png" width="500" height="400" alt="My Architecture Diagram">
 
 > Medallion flow diagram — Bronze ingestion → Silver transformation → Gold Star Schema
 
