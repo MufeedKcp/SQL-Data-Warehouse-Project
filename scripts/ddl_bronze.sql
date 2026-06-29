@@ -18,7 +18,7 @@ CREATE SCHEMA IF NOT EXISTS gold_prod;
 -- create tables
 
 CREATE TABLE bronze_dev.crm_cust_info(
-    cst_id INT,
+    cst_id VARCHAR(50),
     cst_key VARCHAR(50),
     cst_firstname VARCHAR(50),
     cst_lastname VARCHAR(50),
@@ -71,7 +71,7 @@ CREATE TABLE bronze_dev.erp_px_cat_g1v2(
 
 -- create table for logs 
 
-CREATE TABLE IF NOT EXISTS bronze_dev.Load_Log_Table(
+CREATE TABLE IF NOT EXISTS bronze_dev.load_logs(
     log_id INT PRIMARY KEY AUTO_INCREMENT,
     table_name VARCHAR(50),
     table_action VARCHAR(50),

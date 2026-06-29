@@ -9,14 +9,14 @@ SELECT
     ci.cst_marital_status AS maritial_status,
 CASE 
 	WHEN ci.cst_gndr != 'n/a' THEN ci.cst_gndr
-    ELSE COALESCE(cb.gender, 'n/a')
+    ELSE COALESCE(cb.gen, 'n/a')
 END AS gender,
     cl.cntry AS country,
-	cb.birth_date AS birthdate,
+	cb.bdate AS birthdate,
     ci.cst_create_date AS create_date
 FROM silver_test.cust_info ci
 LEFT JOIN silver_test.cust_dob cb
-	ON ci.cst_key = cb.cst_id 
+	ON ci.cst_key = cb.cid 
 LEFT JOIN silver_test.cust_location cl
 	ON ci.cst_key = cl.cid;
 
@@ -38,7 +38,7 @@ SELECT
 FROM silver_test.prd_info pi
 LEFT JOIN silver_test.prd_category pc
 	ON pi.cat_id = pc.id
-WHERE pi.prd_end_dt IS NULL; ----- exclude the historical data 
+WHERE pi.prd_end_dt IS NULL; /* exclude the historical data */ 
 
 
 CREATE OR REPLACE VIEW gold_prod.fact_sales AS

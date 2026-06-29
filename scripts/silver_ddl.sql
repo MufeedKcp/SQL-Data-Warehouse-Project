@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS silver_test.prd_info(
     prd_start_dt DATE,
     prd_end_dt DATE,
     dwh_create_date DATETIME DEFAULT NOW()
-)
+);
 
 
 CREATE TABLE IF NOT EXISTS silver_test.sales_details(
@@ -67,11 +67,11 @@ CREATE TABLE IF NOT EXISTS silver_test.prd_category(
     dwh_create_date DATETIME DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS silver_test.Load_Logs(
+CREATE TABLE IF NOT EXISTS silver_test.load_logs(
     logs_id INT PRIMARY KEY AUTO_INCREMENT,
     table_name VARCHAR(50),
     table_action VARCHAR(50),
     row_count INT DEFAULT 0,
-    load_duration DATETIME,
+    load_duration BIGINT,
     load_date DATETIME DEFAULT NOW()
 );

@@ -55,8 +55,6 @@ SET @cust_info_silver_duration = ROUND((UNIX_TIMESTAMP(@cust_info_silver_load_en
 
 INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
 VALUES('silver_test.cust_info', 'Loading data', @cust_info_silver_row_counts, @cust_info_silver_duration);
-
------
  
 TRUNCATE TABLE silver_test.prd_info;
 INSERT INTO silver_test.load_logs(table_name, table_action) 
@@ -98,7 +96,7 @@ SET @prd_info_silver_duration = ROUND((UNIX_TIMESTAMP(@prd_info_silver_load_end_
 INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
 VALUES('silver_test.prd_info', 'Loading data', @prd_info_silver_row_counts, @prd_info_silver_duration);
 
------
+
 
 TRUNCATE TABLE silver_test.sales_details;
 INSERT INTO silver_test.load_logs(table_name, table_action) 
@@ -166,7 +164,7 @@ SET @sales_details_silver_duration = ROUND((UNIX_TIMESTAMP(@sales_details_silver
 INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
 VALUES('silver_test.sales_details', 'Loading data', @sales_details_silver_row_counts, @sales_details_silver_duration);
 
-------
+
 
 TRUNCATE TABLE silver_test.cust_dob;
 INSERT INTO silver_test.load_logs(table_name, table_action) 
@@ -175,9 +173,9 @@ VALUES('silver_test.cust_dob', 'Truncate table');
 SET @cust_dob_silver_start_load_time = NOW();
 
 INSERT INTO silver_test.cust_dob(
-    cst_id,
-    birth_date,
-    gender
+    cid,
+    bdate,
+    gen
 )
 SELECT 
 CASE 
@@ -204,7 +202,7 @@ SET @cust_dob_silver_duration = ROUND((UNIX_TIMESTAMP(@cust_dob_silver_load_end_
 INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
 VALUES('silver_test.cust_dob', 'Loading data', @cust_dob_silver_row_counts, @cust_dob_silver_duration);
 
--------
+
 
 TRUNCATE TABLE silver_test.cust_location;
 INSERT INTO silver_test.load_logs(table_name, table_action) 
@@ -234,7 +232,7 @@ SET @cust_location_silver_duration = ROUND((UNIX_TIMESTAMP(@cust_location_silver
 INSERT INTO silver_test.load_logs(table_name, table_action, row_count, load_duration) 
 VALUES('silver_test.cust_location', 'Loading data', @cust_location_silver_row_counts, @cust_location_silver_duration);
 
-------
+
 
 TRUNCATE TABLE silver_test.prd_category;
 INSERT INTO silver_test.load_logs(table_name, table_action) 
