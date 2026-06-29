@@ -36,17 +36,18 @@ The entire pipeline is fully automated via **Docker Compose**: a single command 
 
 ## Architecture Diagram
 
-<!-- Architecture diagram placeholder -->
+
 <img src="/SQL-Data-Warehouse-Project/docs/1st-architecture.drawio" width="600" alt="My Architecture Diagram">
 
 > Medallion flow diagram — Bronze ingestion → Silver transformation → Gold Star Schema
 
-<!-- Data flow / lineage diagram placeholder -->
+
 <img src="/SQL-Data-Warehouse-Project/docs/Data_Model.drawio" width="600" alt="My Architecture Diagram">
 
 > Star schema ERD — fact_sales_details with dim_customers and dim_products
 
 <img src="/SQL-Data-Warehouse-Project/docs/SQL-dwh-architecture.drawio" width="600" alt="My Architecture Diagram">
+
 ---
 
 ## Medallion Layer Design
