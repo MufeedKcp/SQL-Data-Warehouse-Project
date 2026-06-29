@@ -1,6 +1,7 @@
 services:
   mysql:
-    image: mysql:8.0
+    image: mysql:8.0.46
+
     container_name: sql-data-warehouse
 
     restart: unless-stopped
@@ -8,10 +9,11 @@ services:
       - "3307:3306"
 
     environment:
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: MufeedKcp
+      MYSQL_PASSWORD: MufeedKcp12345
 
     command:
-      - --local-infile=1
       - --secure-file-priv=
 
     volumes:
