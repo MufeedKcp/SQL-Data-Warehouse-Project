@@ -274,4 +274,4 @@ If this project was useful or saved you time, consider supporting it:
 
 ## License
 
-This project is licensed under the terms of the [LICENSE](LICENSE) file included in this repository.
+This project is licensed under the terms of the [LICENSE](/SQL-Data-Warehouse-Project/LICENSE) file included in this repository.
